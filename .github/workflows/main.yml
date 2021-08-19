@@ -20,8 +20,7 @@ jobs:
         run: |
           npm install
       - name: Build Android Release
-        run: |
-          chmod +x ./gradlew
+        run: chmod +x ./gradlew
         run: |
           cd android && ./gradlew assembleRelease
       - name: Upload Artifact
