@@ -27,7 +27,8 @@ jobs:
         run: |
           npm install
       - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
+        run: chmod +x ./gradlew 
+            cd android && chmod +x ./gradlew
         # Build Command
       - name: Build Android Release
         run: |
