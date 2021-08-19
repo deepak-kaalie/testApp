@@ -17,8 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.myApp.testApp",
+      "buildNumber": "1.0.0"
     },
+  
     "android": {
       "package": "com.myApp.testApp",
       "versionCode": 1,
