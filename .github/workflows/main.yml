@@ -21,8 +21,8 @@ jobs:
       - name: Build android apk
         env:
           ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
-          EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
-          EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+          EXPO_USERNAME: ${{ secrets.EXPO_CLI_USERNAME }}
+          EXPO_PASSWORD: ${{ secrets.EXPO_CLI_PASSWORD }}
           EXPO_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           EXPO_ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
