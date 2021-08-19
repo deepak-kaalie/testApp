@@ -26,8 +26,8 @@ jobs:
 #       - name: Make gradlew executable
 #         run: chmod +x ./gradlew
 
-      - name: Generate Debug APK
-        run: ./gradlew clean assembleDebug
+#       - name: Generate Debug APK
+#         run: ./gradlew clean assembleDebug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
