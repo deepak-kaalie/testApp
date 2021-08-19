@@ -5,23 +5,33 @@ on:
       - master
 jobs:
   Build-for-android:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout git repo
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup turtle cli
+        run: |
+          echo "::add-path::$HOME/.npm-global/bin"
+          npm config set prefix $HOME/.npm-global
+          npm install -g turtle-cli
+      - name: Build android apk
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          EXPO_USERNAME: ${{ secrets.EXPO_USERNAME }}
+          EXPO_PASSWORD: ${{ secrets.EXPO_PASSWORD }}
+          EXPO_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          EXPO_ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          turtle setup:android
+          echo $ANDROID_KEYSTORE > ./icon-guidelines.jks.base64
+          base64 --decode ./icon-guidelines.jks.base64 > icon-guidelines.jks
+          turtle build:android --keystore-path ./icon-guidelines.jks --keystore-alias ${{ secrets.ANDROID_KEYSTORE_ALIAS }} --type apk --output ./icon-guidelines-$GITHUB_SHA.apk
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
         with:
-          node-version: 12.x
-      - uses: actions/setup-java@v1.4.3
-        with:
-          java-version: '9.0.4' # The JDK version to make available on the path.
-          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
-          architecture: x64 # (x64 or x86) - defaults to x64
-      - uses: expo/expo-github-action@v5
-        with:
-          expo-version: 4.x
-          expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
-          expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
-      - name: Install deps
-        run: yarn install
-      - name: Build Android APK Bundle
-        run: expo build:android
+          name: icon-guidelines-${{ github.sha }}.apk
+          path: ./icon-guidelines-${{ github.sha }}.apk
